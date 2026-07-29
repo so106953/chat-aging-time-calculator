@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>UL/IEC 60691 导体耐热老化试验调度</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand"><span class="brand-code">60691</span><span>CHAT 老化时间推算</span></div>
+  </header>
+  <main class="app-shell">
+    <aside class="input-rail">
+      <div class="rail-kicker">UL/IEC 60691 · Annex C</div>
+      <h1>试验输入</h1>
+      <p class="rail-intro">输入测试开始时刻与测试结束时软件显示的总时长（含加热与休息），系统自动定位当前试验状态。</p>
+      <form id="scheduleForm">
+        <label>试验开始时间<input id="startMoment" type="datetime-local" required /></label>
+        <label>测试结束总时长（含休息时间）<div class="unit-input"><input id="totalHours" type="number" min="0" max="1560" step="0.01" value="0" required /><span>小时</span></div></label>
+        <label>额定温度 Tf<div class="unit-input"><input id="tfVal" type="number" value="175" step="0.1" required /><span>°C</span></div></label>
+        <button type="submit">更新排程</button>
+      </form>
+      <div class="rule-box"><strong>时间口径</strong><p>60 h 加热 → 12 h 休息 → 36 h 加热 → 12 h 休息 → 72 h 加热；每周累计 192 h。</p></div>
+      <div class="total-box"><span>总排程时长</span><strong>1560 <em>小时</em></strong><small>8 周循环 + 阶段 G 24 h</small></div>
+    </aside>
+    <section class="workspace">
+      <section class="page-heading"><div><p>CONDUCTIVE HEAT AGING TEST</p><h2>当前状态与下一步操作</h2></div></section>
+      <section class="action-panel" aria-live="polite">
+        <div class="stage-block"><span class="metric-label">当前阶段</span><div class="stage-main"><b id="stageLetter">A</b><div><strong id="stageTitle">加热阶段</strong><small id="segmentName">W1 · 加热 1（60 h）</small></div></div></div>
+        <div class="metric-block"><span class="metric-label">设定温度</span><strong id="setTemp">—</strong><small id="tempDetail">额定温度 Tf</small></div>
+        <div class="metric-block"><span class="metric-label">软件累计已用时间</span><strong id="usedHours">0.00 h</strong><small id="segmentProgress">当前段落 0 / 60 h</small></div>
+        <div class="next-block"><span class="metric-label">当前阶段剩余时间</span><strong id="targetDT">—</strong></div>
+      </section>
+      <section class="summary-strip"><span>开始时间 <b id="startSummary">—</b></span><span>计划结束 <b id="endSummary">—</b></span><span>实际结束 <b id="actualEndSummary">—</b></span><span>当前状态 <b id="statusSummary">进行中</b></span><span>排程进度 <b id="progressSummary">0.0%</b></span></section>
+      <section class="timeline-section">
+        <div class="section-header"><div><p>STANDARD SCHEDULE</p><h2>A–G 阶段时间轴</h2></div><span>软件累计时间 · 0–1560 h</span></div>
+        <div id="stageTimeline" class="stage-timeline"></div>
+      </section>
+      <section class="table-section">
+        <div class="section-header"><div><p>DETAILED ACTIONS</p><h2>详细动作时间轴</h2></div><span id="rowCount">—</span></div>
+        <div class="table-wrap"><table><thead><tr><th>阶段 / 段落</th><th>类型</th><th>设定</th><th>时长</th><th>开始时刻</th><th>结束时刻</th><th>累计时间</th></tr></thead><tbody id="tbBody"></tbody></table></div>
+      </section>
+    </section>
+  </main>
+  <footer>本工具用于 UL/IEC 60691 Annex C 导体耐热老化试验的排程辅助；实际试验应以批准的测试计划与记录为准。</footer>
+  <script src="app.js"></script>
+</body>
+</html>
