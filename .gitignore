@@ -1,0 +1,6 @@
+# Local development caches and temporary deployment packages
+.vite/
+*.tar.gz
+
+# Vercel local metadata
+.vercel/
